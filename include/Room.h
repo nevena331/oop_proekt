@@ -15,6 +15,14 @@ public:
 
     ~Room();
 
+    // Disable copying
+    Room(const Room&) = delete;
+    Room& operator=(const Room&) = delete;
+
+    // Allow moving
+    Room(Room&&) noexcept = default;
+    Room& operator=(Room&&) noexcept = default;
+
     // Getters
     int getBedCount() const;
     double getPricePerBed() const;

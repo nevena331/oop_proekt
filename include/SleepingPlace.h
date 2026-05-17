@@ -16,6 +16,14 @@ public:
 
     virtual ~SleepingPlace();
 
+    // Disable copying (prevent object slicing)
+    SleepingPlace(const SleepingPlace&) = delete;
+    SleepingPlace& operator=(const SleepingPlace&) = delete;
+
+    // Allow moving
+    SleepingPlace(SleepingPlace&&) noexcept = default;
+    SleepingPlace& operator=(SleepingPlace&&) noexcept = default;
+
     // Getters
     string getName() const;
     double getLatitude() const;
