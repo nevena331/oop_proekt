@@ -15,29 +15,29 @@ public:
 
     ~Room();
 
-    // Disable copying
     Room(const Room&) = delete;
     Room& operator=(const Room&) = delete;
+    
+    Room(Room&&) noexcept = delete;
+    Room& operator=(Room&&) noexcept = delete;
 
-    // Allow moving
-    Room(Room&&) noexcept = default;
-    Room& operator=(Room&&) noexcept = default;
 
     // Getters
     int getBedCount() const;
     double getPricePerBed() const;
     bool hasPrivateBathroom() const;
     std::string getRoomNumber() const;
+    
+    double getTotalPrice() const;
 
+    string getDescription() const;
+
+    void printInfo() const;
+    
     // Setters
     void setBedCount(int beds);
     void setPricePerBed(double price);
     void setPrivateBathroom(bool hasPrivate);
     void setRoomNumber(const std::string& number);
 
-    double getTotalPrice() const;
-
-    string getDescription() const;
-
-    void printInfo() const;
 };

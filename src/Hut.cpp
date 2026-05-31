@@ -2,8 +2,11 @@
 #include "Room.h"
 #include <iostream>
 #include <iomanip>
+#include <stdexcept>
 
-Hut::Hut(const std::string& name, double lat, double lon, int alt,
+using namespace std;
+
+Hut::Hut(const string& name, double lat, double lon, int alt,
          bool dining, bool electricity, bool water)
     : SleepingPlace(name, lat, lon, alt),
       hasDiningHall(dining),
@@ -12,9 +15,11 @@ Hut::Hut(const std::string& name, double lat, double lon, int alt,
 
 Hut::~Hut() {}
 
-void Hut::addRoom(std::shared_ptr<Room> room) {
+void Hut::addRoom(shared_ptr<Room> room) {
     if (room) {
         rooms.push_back(room);
+    }else {
+        throw invalid_argument("Cannot add a null room");
     }
 }
 
@@ -22,7 +27,7 @@ int Hut::getRoomCount() const {
     return rooms.size();
 }
 
-std::shared_ptr<Room> Hut::getRoom(int index) const {
+shared_ptr<Room> Hut::getRoom(int index) const {
     if (index >= 0 && index < static_cast<int>(rooms.size())) {
         return rooms[index];
     }
@@ -53,12 +58,12 @@ void Hut::setWater(bool hasWtr) {
     hasWater = hasWtr;
 }
 
-std::string Hut::getDescription() const {
-    return "Hut with amenities and " + std::to_string(rooms.size()) + " rooms";
+string Hut::getDescription() const {
+    return "Hut with amenities and " + to_string(rooms.size()) + " rooms";
 }
 
-std::string Hut::getAmenities() const {
-    std::string amenities = "";
+string Hut::getAmenities() const {
+    string amenities = "";
     amenities += (hasDiningHall ? "✓ Dining hall" : "✗ Dining hall");
     amenities += " | ";
     amenities += (hasElectricity ? "✓ Electricity" : "✗ Electricity");
@@ -68,25 +73,25 @@ std::string Hut::getAmenities() const {
 }
 
 void Hut::printInfo() const {
-    std::cout << "\n╔══════════════════════════════════════════════════╗\n";
-    std::cout << "║           HUT: " << std::left << std::setw(31) << name << "║\n";
-    std::cout << "╟──────────────────────────────────────────────────╢\n";
-    std::cout << "║ Location: " << std::fixed << std::setprecision(4)
+    cout << "\n╔══════════════════════════════════════════════════╗\n";
+    cout << "║           HUT: " << left << setw(31) << name << "║\n";
+    cout << "╟──────────────────────────────────────────────────╢\n";
+    cout << "║ Location: " << fixed << setprecision(4)
               << latitude << "°, " << longitude << "° | Altitude: "
               << altitude << " m\n";
-    std::cout << "║ Amenities: " << getAmenities() << "\n";
-    std::cout << "║ Rooms: " << rooms.size() << "\n";
+    cout << "║ Amenities: " << getAmenities() << "\n";
+    cout << "║ Rooms: " << rooms.size() << "\n";
     
     if (!rooms.empty()) {
-        std::cout << "╟──────────────────────────────────────────────────╢\n";
-        std::cout << "║ ROOMS:\n";
+        cout << "╟──────────────────────────────────────────────────╢\n";
+        cout << "║ ROOMS:\n";
         for (size_t i = 0; i < rooms.size(); ++i) {
             if (rooms[i]) {
-                std::cout << "║   " << (i + 1) << ". Room - "
+                cout << "║   " << (i + 1) << ". Room - "
                           << rooms[i]->getBedCount() << " beds\n";
             }
         }
     }
     
-    std::cout << "╚══════════════════════════════════════════════════╝\n";
+    cout << "╚══════════════════════════════════════════════════╝\n";
 }

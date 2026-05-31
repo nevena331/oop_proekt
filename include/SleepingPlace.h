@@ -16,13 +16,11 @@ public:
 
     virtual ~SleepingPlace();
 
-    // Disable copying (prevent object slicing)
     SleepingPlace(const SleepingPlace&) = delete;
     SleepingPlace& operator=(const SleepingPlace&) = delete;
-
-    // Allow moving
-    SleepingPlace(SleepingPlace&&) noexcept = default;
-    SleepingPlace& operator=(SleepingPlace&&) noexcept = default;
+    
+    SleepingPlace(SleepingPlace&&) noexcept = delete;
+    SleepingPlace& operator=(SleepingPlace&&) noexcept = delete;
 
     // Getters
     string getName() const;

@@ -2,9 +2,12 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
 
-Camping::Camping(const std::string& name, double lat, double lon, int alt,
-                 int tents, int spaces, double tripodFeeAmount, const std::string& type)
+using namespace std;
+
+Camping::Camping(const string& name, double lat, double lon, int alt,
+                 int tents, int spaces, double tripodFeeAmount, const string& type)
     : SleepingPlace(name, lat, lon, alt),
       tentCapacity(tents),
       groundSpaces(spaces),
@@ -25,7 +28,7 @@ double Camping::getTripodFee() const {
     return tripodFee;
 }
 
-std::string Camping::getCampingType() const {
+string Camping::getCampingType() const {
     return campingType;
 }
 
@@ -38,16 +41,20 @@ void Camping::setTentCapacity(int tents) {
 void Camping::setGroundSpaces(int spaces) {
     if (spaces >= 0) {
         groundSpaces = spaces;
+    }else{
+        throw invalid_argument("Ground spaces cannot be negative.");
     }
 }
 
 void Camping::setTripodFee(double fee) {
     if (fee >= 0) {
         tripodFee = fee;
+    }else{
+        throw invalid_argument("Tripod fee cannot be negative.");
     }
 }
 
-void Camping::setCampingType(const std::string& type) {
+void Camping::setCampingType(const string& type) {
     campingType = type;
 }
 
@@ -59,33 +66,33 @@ double Camping::calculateTentIncome(int numOfTents) const {
     return numOfTents * tripodFee;
 }
 
-std::string Camping::getDescription() const {
-    std::ostringstream oss;
+string Camping::getDescription() const {
+    ostringstream oss;
     oss << "Camping - " << campingType << " | "
         << tentCapacity << " tents, " << groundSpaces << " spaces";
     return oss.str();
 }
 
-std::string Camping::getFacilitiesInfo() const {
-    std::ostringstream oss;
+string Camping::getFacilitiesInfo() const {
+    ostringstream oss;
     oss << "Tents: " << tentCapacity << " | "
         << "Spaces: " << groundSpaces << " | "
-        << "Fee: " << std::fixed << std::setprecision(2)
+        << "Fee: " << fixed << setprecision(2)
         << tripodFee << " BGN";
     return oss.str();
 }
 
 void Camping::printInfo() const {
-    std::cout << "\n╔═══════════════════════════════════════════════╗\n";
-    std::cout << "║           CAMPING: " << std::left << std::setw(20) << name << "║\n";
-    std::cout << "╟───────────────────────────────────────────────╢\n";
-    std::cout << "║ Location: " << std::fixed << std::setprecision(4)
+    cout << "\n╔═══════════════════════════════════════════════╗\n";
+    cout << "║           CAMPING: " << left << setw(20) << name << "║\n";
+    cout << "╟───────────────────────────────────────────────╢\n";
+    cout << "║ Location: " << fixed << setprecision(4)
               << latitude << "°, " << longitude << "° | Altitude: "
               << altitude << " m\n";
-    std::cout << "║ Type: " << std::left << std::setw(39) << campingType << "║\n";
-    std::cout << "║ Capacity: " << tentCapacity << " tents + "
+    cout << "║ Type: " << left << setw(39) << campingType << "║\n";
+    cout << "║ Capacity: " << tentCapacity << " tents + "
               << groundSpaces << " spaces = " << getTotalCapacity() << " total\n";
-    std::cout << "║ Tripod fee: " << std::fixed << std::setprecision(2)
-              << tripodFee << " BGN\n";
-    std::cout << "╚═══════════════════════════════════════════════╝\n";
+    cout << "║ Tripod fee: " << fixed << setprecision(2)
+              << tripodFee << " EUR\n";
+    cout << "╚═══════════════════════════════════════════════╝\n";
 }

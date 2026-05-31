@@ -2,8 +2,11 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <stdexcept>
 
-Room::Room(int beds, double price, bool bathroom, const std::string& number)
+using namespace std;
+
+Room::Room(int beds, double price, bool bathroom, const string& number)
     : bedCount(beds), pricePerBed(price), hasOwnBathroom(bathroom), roomNumber(number) {}
 
 Room::~Room() {}
@@ -20,19 +23,23 @@ bool Room::hasPrivateBathroom() const {
     return hasOwnBathroom;
 }
 
-std::string Room::getRoomNumber() const {
+string Room::getRoomNumber() const {
     return roomNumber;
 }
 
 void Room::setBedCount(int beds) {
     if (beds > 0) {
         bedCount = beds;
+    }else{
+        throw invalid_argument("Bed count must be positive.");
     }
 }
 
 void Room::setPricePerBed(double price) {
     if (price >= 0) {
         pricePerBed = price;
+    }else{
+        throw invalid_argument("Price per bed cannot be negative.");
     }
 }
 
@@ -40,7 +47,10 @@ void Room::setPrivateBathroom(bool hasPrivate) {
     hasOwnBathroom = hasPrivate;
 }
 
-void Room::setRoomNumber(const std::string& number) {
+void Room::setRoomNumber(const string& number) {
+    if(number.empty()){
+        throw invalid_argument("Room number cannot be empty.");
+    }
     roomNumber = number;
 }
 
@@ -48,9 +58,9 @@ double Room::getTotalPrice() const {
     return bedCount * pricePerBed;
 }
 
-std::string Room::getDescription() const {
-    std::ostringstream oss;
-    oss << bedCount << " beds, " << std::fixed << std::setprecision(2)
+string Room::getDescription() const {
+    ostringstream oss;
+    oss << bedCount << " beds, " << fixed << setprecision(2)
         << pricePerBed << " BGN/bed";
     if (hasOwnBathroom) {
         oss << ", with private WC";
@@ -59,13 +69,13 @@ std::string Room::getDescription() const {
 }
 
 void Room::printInfo() const {
-    std::cout << "\n  ┌─ ROOM " << roomNumber << " ─┐\n";
-    std::cout << "  │ Beds: " << bedCount << "\n";
-    std::cout << "  │ Price per bed: " << std::fixed << std::setprecision(2)
-              << pricePerBed << " BGN\n";
-    std::cout << "  │ Total price: " << std::fixed << std::setprecision(2)
-              << getTotalPrice() << " BGN\n";
-    std::cout << "  │ WC: " << (hasOwnBathroom ? "✓ Private" : "✗ Shared")
+    cout << "\n  ┌─ ROOM " << roomNumber << " ─┐\n";
+    cout << "  │ Beds: " << bedCount << "\n";
+    cout << "  │ Price per bed: " << fixed << setprecision(2)
+              << pricePerBed << " EUR\n";
+    cout << "  │ Total price: " << fixed << setprecision(2)
+              << getTotalPrice() << " EUR\n";
+    cout << "  │ WC: " << (hasOwnBathroom ? "✓ Private" : "✗ Shared")
               << "\n";
-    std::cout << "  └─────────────────────┘\n";
+    cout << "  └─────────────────────┘\n";
 }
