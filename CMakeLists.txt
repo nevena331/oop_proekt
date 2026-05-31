@@ -13,6 +13,7 @@ set(CORE_SOURCES
     src/Hut.cpp
     src/Camping.cpp
     src/Room.cpp
+    src/Tourist.cpp
 )
 
 # Create main executable
