@@ -15,6 +15,7 @@ set(CORE_SOURCES
     src/Room.cpp
     src/Tourist.cpp
     src/Trail.cpp
+    src/HikingGroup.cpp
 )
 
 # Create main executable
