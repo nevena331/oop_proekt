@@ -45,6 +45,7 @@ public:
 
     bool hasTourist(shared_ptr<Tourist> tourist) const;
 
+    void dethroneLeader(shared_ptr<Tourist> newLeader);
 
     double calculateGroupPrice(double basePrice) const;
 };

@@ -81,6 +81,29 @@ bool HikingGroup::hasTourist(shared_ptr<Tourist> tourist) const {
     return false;
 }
 
+void HikingGroup::dethroneLeader(shared_ptr<Tourist> newLeader) {
+    if (!newLeader) {
+        throw invalid_argument("New leader cannot be null");
+    }
+    
+    if (!hasTourist(newLeader)) {
+        throw invalid_argument("New leader must be an existing member of the group");
+    }
+    
+    if (newLeader == leader) {
+        throw invalid_argument("New leader cannot be the current leader");
+    }
+    
+    shared_ptr<Tourist> oldLeader = leader;
+    leader = newLeader;
+    
+    // Remove the old leader from the group
+    auto it = find(tourists.begin(), tourists.end(), oldLeader);
+    if (it != tourists.end()) {
+        tourists.erase(it);
+    }
+}
+
 double HikingGroup::calculateGroupPrice(double basePrice) const {
     return basePrice * (1.0 - (groupDiscount / 100.0));
 }
