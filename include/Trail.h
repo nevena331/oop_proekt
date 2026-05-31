@@ -12,12 +12,13 @@ private:
     shared_ptr<SleepingPlace> end;
     double lengthKm;
     double elevationGainM;
+    double denivelationM; // Net elevation change (can be negative)
     int difficulty; // 1..5
 
 public:
     Trail(shared_ptr<SleepingPlace> startPoint,
           shared_ptr<SleepingPlace> endPoint,
-          double length, double elevation, int diff);
+          double length, double elevation, double denivellation, int diff);
 
     ~Trail();
 
@@ -34,6 +35,7 @@ public:
 
     double getLengthKm() const;
     double getElevationGainM() const;
+    double getDenivelationM() const;
     int getDifficulty() const;
 
     void setStart(shared_ptr<SleepingPlace> newStart);
@@ -41,6 +43,7 @@ public:
 
     void setLengthKm(double length);
     void setElevationGainM(double elevation);
+    void setDenivelationM(double denivellation);
     void setDifficulty(int diff);
 
     string getDifficultyString() const;

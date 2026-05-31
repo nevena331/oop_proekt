@@ -6,8 +6,8 @@
 using namespace std;
 
 Trail::Trail(shared_ptr<SleepingPlace> startPoint, shared_ptr<SleepingPlace> endPoint,
-             double length, double elevation, int diff)
-    : start(startPoint), end(endPoint), lengthKm(length), elevationGainM(elevation), difficulty(diff) {}
+             double length, double elevation, double denivellation, int diff)
+    : start(startPoint), end(endPoint), lengthKm(length), elevationGainM(elevation), denivelationM(denivellation), difficulty(diff) {}
 
 Trail::~Trail() {}
 
@@ -25,6 +25,10 @@ double Trail::getLengthKm() const {
 
 double Trail::getElevationGainM() const {
     return elevationGainM;
+}
+
+double Trail::getDenivelationM() const {
+    return denivelationM;
 }
 
 int Trail::getDifficulty() const {
@@ -55,6 +59,10 @@ void Trail::setElevationGainM(double elevation) {
     else throw invalid_argument("Elevation gain cannot be negative");
 }
 
+void Trail::setDenivelationM(double denivellation) {
+    denivelationM = denivellation;
+}
+
 void Trail::setDifficulty(int diff) {
     if (diff >= 1 && diff <= 5) difficulty = diff;
     else throw invalid_argument("Difficulty must be between 1 and 5");
@@ -83,6 +91,7 @@ void Trail::printInfo() const {
     cout << "║ To: " << end->getName() << "\n";
     cout << "║ Length: " << fixed << setprecision(2) << lengthKm << " km\n";
     cout << "║ Elevation Gain: " << elevationGainM << " m\n";
+    cout << "║ Denivelation: " << denivelationM << " m\n";
     cout << "║ Difficulty: " << getDifficultyString() << " (" << difficulty << "/5)\n";
     cout << "╚═══════════════════════════════════════════╝\n";
 }

@@ -19,17 +19,10 @@ set(CORE_SOURCES
     src/Booking.cpp
 )
 
-# Create main executable
-add_executable(hiking_system ${CORE_SOURCES} src/main.cpp)
-
 # Create test executable
 add_executable(test_suite ${CORE_SOURCES} src/tests.cpp)
 
 # Set output directories
-set_target_properties(hiking_system PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build"
-)
-
 set_target_properties(test_suite PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/build"
 )

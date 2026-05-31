@@ -45,8 +45,9 @@ void SleepingPlace::setCoordinates(double lat, double lon) {
 }
 
 void SleepingPlace::setAltitude(int alt) {
-    if(alt < -430)
-    altitude = alt;
+    if(alt >= -430) {
+        altitude = alt;
+    }
 }
 
 

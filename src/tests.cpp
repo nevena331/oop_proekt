@@ -6,6 +6,7 @@
 #include "Hut.h"
 #include "Camping.h"
 #include "Room.h"
+#include "Trail.h"
 
 int testsPassed = 0;
 int testsFailed = 0;
@@ -208,6 +209,87 @@ void testPolymorphism() {
     std::cout << "places[1]->getDescription(): " << places[1]->getDescription() << "\n";
 }
 
+// ===== Trail Tests =====
+void testTrail() {
+    printTestHeader("Trail Class");
+    
+    // Create sleeping places for trail endpoints
+    auto hut1 = std::make_shared<Hut>("Rila Hut", 42.1354, 23.6552, 2298, true, true, true);
+    auto hut2 = std::make_shared<Hut>("Pirin Hut", 41.75, 23.5, 2150, true, false, true);
+    
+    // Create trail with positive denivelation (net downhill)
+    Trail trail1(hut1, hut2, 15.5, 500.0, -148.0, 3);
+    
+    assertTest(trail1.getStart()->getName() == "Rila Hut", "Constructor sets start point");
+    assertTest(trail1.getEnd()->getName() == "Pirin Hut", "Constructor sets end point");
+    assertTest(std::abs(trail1.getLengthKm() - 15.5) < 0.01, "Constructor sets length");
+    assertTest(std::abs(trail1.getElevationGainM() - 500.0) < 0.01, "Constructor sets elevation gain");
+    assertTest(std::abs(trail1.getDenivelationM() - (-148.0)) < 0.01, "Constructor sets denivelation");
+    assertTest(trail1.getDifficulty() == 3, "Constructor sets difficulty");
+    
+    // Test denivelation with positive value (net uphill)
+    Trail trail2(hut1, hut2, 12.0, 600.0, 450.0, 4);
+    assertTest(std::abs(trail2.getDenivelationM() - 450.0) < 0.01, "Denivelation can be positive (net uphill)");
+    
+    // Test difficulty string
+    assertTest(trail1.getDifficultyString() == "Moderate", "getDifficultyString() returns correct value for 3");
+    assertTest(trail2.getDifficultyString() == "Hard", "getDifficultyString() returns correct value for 4");
+    
+    // Test setters
+    trail1.setLengthKm(16.0);
+    assertTest(std::abs(trail1.getLengthKm() - 16.0) < 0.01, "setLengthKm() works");
+    
+    trail1.setElevationGainM(520.0);
+    assertTest(std::abs(trail1.getElevationGainM() - 520.0) < 0.01, "setElevationGainM() works");
+    
+    trail1.setDenivelationM(-160.0);
+    assertTest(std::abs(trail1.getDenivelationM() - (-160.0)) < 0.01, "setDenivelationM() works with negative values");
+    
+    trail1.setDifficulty(2);
+    assertTest(trail1.getDifficulty() == 2, "setDifficulty() works");
+    assertTest(trail1.getDifficultyString() == "Easy", "getDifficultyString() updates after difficulty change");
+    
+    // Test getDescription
+    std::string desc = trail1.getDescription();
+    assertTest(desc.find("Rila Hut") != std::string::npos, "getDescription() contains start name");
+    assertTest(desc.find("Pirin Hut") != std::string::npos, "getDescription() contains end name");
+    
+    std::cout << "\nTrail description: " << desc << "\n";
+    std::cout << "Trail 1 info:\n";
+    trail1.printInfo();
+    std::cout << "Trail 2 info:\n";
+    trail2.printInfo();
+    
+    // Test error conditions
+    try {
+        trail1.setLengthKm(-5.0);
+        assertTest(false, "setLengthKm() should reject negative length");
+    } catch (const std::invalid_argument&) {
+        assertTest(true, "setLengthKm() rejects negative length");
+    }
+    
+    try {
+        trail1.setElevationGainM(-100.0);
+        assertTest(false, "setElevationGainM() should reject negative elevation");
+    } catch (const std::invalid_argument&) {
+        assertTest(true, "setElevationGainM() rejects negative elevation");
+    }
+    
+    try {
+        trail1.setDifficulty(6);
+        assertTest(false, "setDifficulty() should reject difficulty > 5");
+    } catch (const std::invalid_argument&) {
+        assertTest(true, "setDifficulty() rejects difficulty > 5");
+    }
+    
+    try {
+        trail1.setDifficulty(0);
+        assertTest(false, "setDifficulty() should reject difficulty < 1");
+    } catch (const std::invalid_argument&) {
+        assertTest(true, "setDifficulty() rejects difficulty < 1");
+    }
+}
+
 // ===== Integration Test =====
 void testIntegration() {
     printTestHeader("Integration Test - Complete System");
@@ -264,6 +346,7 @@ int main() {
         testCamping();
         testSleepingPlace();
         testPolymorphism();
+        testTrail();
         testIntegration();
     } catch (const std::exception& e) {
         std::cout << "\n✗ EXCEPTION CAUGHT: " << e.what() << "\n";
